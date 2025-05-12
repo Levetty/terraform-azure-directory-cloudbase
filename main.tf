@@ -31,7 +31,8 @@ locals {
 
 module "cloudbase_app" {
   source                        = "./modules/cloudbase_app"
-  federated_identity_credential = var.federated_identity_credential
+  federated_identity_credential_directory_scan = var.federated_identity_credential_directory_scan
+  federated_identity_credential_security_scan = var.federated_identity_credential_security_scan
   always_recreate_cloudbase_app = var.always_recreate_cloudbase_app
 }
 module "cloudbase_role_setup" {

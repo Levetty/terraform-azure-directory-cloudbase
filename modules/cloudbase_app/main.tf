@@ -71,11 +71,20 @@ resource "azuread_directory_role_assignment" "security_reader" {
   principal_object_id = azuread_service_principal.cloudbase_app_sp.object_id
 }
 
-resource "azuread_application_federated_identity_credential" "cloudbase_app_federated_credential" {
+resource "azuread_application_federated_identity_credential" "cloudbase_app_federated_credential_directory_scan" {
   application_id = azuread_application.cloudbase_app.id
-  display_name   = "cloudbase-app-org-credential"
+  display_name   = "cloudbase-app-org-credential-for-directory-scan"
 
-  issuer    = var.federated_identity_credential.issuer
-  audiences = var.federated_identity_credential.audiences
-  subject   = var.federated_identity_credential.subject
+  issuer    = var.federated_identity_credential_directory_scan.issuer
+  audiences = var.federated_identity_credential_directory_scan.audiences
+  subject   = var.federated_identity_credential_directory_scan.subject
+}
+
+resource "azuread_application_federated_identity_credential" "cloudbase_app_federated_credential_security_scan" {
+  application_id = azuread_application.cloudbase_app.id
+  display_name   = "cloudbase-app-org-credential-for-security-scan"
+
+  issuer    = var.federated_identity_credential_security_scan.issuer
+  audiences = var.federated_identity_credential_security_scan.audiences
+  subject   = var.federated_identity_credential_security_scan.subject
 }

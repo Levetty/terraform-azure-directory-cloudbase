@@ -6,13 +6,22 @@ variable "tenant_id" {
   type        = string
 }
 
-variable "federated_identity_credential" {
+variable "federated_identity_credential_directory_scan" {
   type = object({
     audiences = list(string)
     issuer    = string
     subject   = string
   })
-  description = "(required) Federated Identity Credential for establishing a connection between your Azure environment and Cloudbase. Please provide the values supplied by Cloudbase."
+  description = "(required) Federated Identity Credential for establishing a connection between your Azure environment and Cloudbase. Please provide the values supplied by Cloudbase. For directory scan."
+}
+
+variable "federated_identity_credential_security_scan" {
+  type = object({
+    audiences = list(string)
+    issuer    = string
+    subject   = string
+  })
+  description = "(required) Federated Identity Credential for establishing a connection between your Azure environment and Cloudbase. Please provide the values supplied by Cloudbase. For security scan."
 }
 
 variable "always_recreate_cloudbase_app" {
