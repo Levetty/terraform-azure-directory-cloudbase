@@ -2,7 +2,7 @@
 # Required
 ###############################################################################
 variable "directory_id" {
-  description = "(required) The Azure Entra ID directory ID"
+  description = "(Required) The Azure Entra ID (formerly Azure AD) tenant/directory ID where Cloudbase resources will be created."
   type        = string
 }
 
@@ -12,11 +12,11 @@ variable "federated_identity_credential" {
     issuer    = string
     subject   = string
   })
-  description = "(required) Federated Identity Credential for establishing a connection between your Azure environment and Cloudbase. Please provide the values supplied by Cloudbase."
+  description = "(Required) Federated Identity Credential for establishing secure connection between Azure and Cloudbase. These values are provided by Cloudbase during onboarding."
 }
 
 variable "always_recreate_cloudbase_app" {
-  description = "(optional) Controls whether to always recreate the cloudbase_app. When set to true, the application will be recreated (with a new name) even if it already exists. Set to false if you are using remote Terraform state."
+  description = "(Optional) Controls whether to force recreation of the Cloudbase application. Set to true to create a new app with unique name on every apply. Set to false when using remote Terraform state to maintain existing resources."
   type        = bool
 }
 
@@ -25,9 +25,9 @@ variable "always_recreate_cloudbase_app" {
 ###############################################################################
 variable "excluded_subscription_ids" {
   description = <<EOT
-  (optional) A list of Azure subscription IDs where role assignments will not be applied. Please specify the subscriptions you want to exclude.
+  (Optional) List of Azure subscription IDs to exclude from Cloudbase role assignments. These subscriptions will not be monitored or protected by Cloudbase.
 
-  ex: ["xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy"]
+  Example: ["xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy"]
   EOT
   type        = list(string)
   default     = []
@@ -35,13 +35,13 @@ variable "excluded_subscription_ids" {
 
 variable "enable_cnapp" {
   default     = true
-  description = "(optional) Enable CNAPP functions. If it is true, both CSPM and CWPP role definitions will be created and assigned for comprehensive security scanning."
+  description = "(Optional) Enable Cloud Native Application Protection Platform (CNAPP) functionality. When true, creates both CSPM (Cloud Security Posture Management) and CWPP (Cloud Workload Protection Platform) roles for comprehensive cloud security."
   type        = bool
 }
 
 variable "enable_autoassign" {
   default     = true
-  description = "(optional) Enable automatic role assignment. If it is true, Azure Policy will automatically create new role assignments whenever a new subscription is created in the tenant."
+  description = "(Optional) Enable automatic role assignment for new subscriptions. When true, Azure Policy automatically assigns Cloudbase roles to any new subscription created in the tenant, ensuring continuous protection."
   type        = bool
 }
 
@@ -63,7 +63,7 @@ variable "directory_connection_permissions" {
 
 variable "cspm_permissions" {
   description = <<EOT
-  (optional) Specify the permissions for the CSPM role.
+  (Optional) Permissions for Cloud Security Posture Management (CSPM) role. CSPM continuously monitors cloud resources for security misconfigurations and compliance violations. You can define custom permissions or use built-in roles.
   EOT
 
   type = object({
@@ -109,7 +109,7 @@ variable "cspm_permissions" {
 
 variable "cwpp_permissions" {
   description = <<EOT
-  (optional) Specify the permissions for the CWPP role.
+  (Optional) Permissions for Cloud Workload Protection Platform (CWPP) role. CWPP provides runtime protection for cloud workloads including VMs, containers, and serverless functions. You can define custom permissions or use built-in roles.
   EOT
 
   type = object({
@@ -156,7 +156,7 @@ variable "cwpp_permissions" {
 
 variable "auto_role_assignment_deployment_permissions" {
   description = <<EOT
-  (optional) Specify the permissions for the auto role assignment deployment role.
+  (Optional) Permissions for the deployment role used by Azure Policy to automatically assign Cloudbase roles to new subscriptions. This role enables the policy remediation task to create role assignments.
   EOT
 
   type = object({

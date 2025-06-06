@@ -3,36 +3,36 @@
 ###############################################################################
 variable "cloudbase_app_sp_object_id" {
   description = <<EOT
-  (required) The object ID of the Cloudbase Application Service Principal.
+  (Required) The object ID of the Cloudbase Application Service Principal created by the cloudbase-app module.
 
-  ex: 00000000-0000-0000-0000-000000000000
+  Example: 00000000-0000-0000-0000-000000000000
   EOT
   type        = string
 }
 
 variable "root_management_group_id" {
   description = <<EOT
-  (required) The ID of the root management group.
+  (Required) The ID of the root management group where Azure Policy definitions and assignments will be created for automatic role assignment.
 
-  ex: /providers/Microsoft.Management/managementGroups/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+  Example: /providers/Microsoft.Management/managementGroups/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
   EOT
   type        = string
 }
 
 variable "cspm_role_definition_id" {
   description = <<EOT
-  (optional) The ID of the existing Cloudbase CSPM Role Definition. If specified, the module will not create a new role definition but will use this existing role definition.
+  (Required) The ID of the existing Cloudbase CSPM (Cloud Security Posture Management) role definition created by the cloudbase-role-setup module. This role will be automatically assigned to new subscriptions.
 
-  ex: /providers/Microsoft.Authorization/roleDefinitions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+  Example: /providers/Microsoft.Authorization/roleDefinitions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
   EOT
   type        = string
 }
 
 variable "cwpp_role_definition_id" {
   description = <<EOT
-  (optional) The ID of the existing Cloudbase CWPP Role Definition. If specified, the module will not create a new role definition but will use this existing role definition.
+  (Required) The ID of the existing Cloudbase CWPP (Cloud Workload Protection Platform) role definition created by the cloudbase-role-setup module. This role will be automatically assigned to new subscriptions.
 
-  ex: /providers/Microsoft.Authorization/roleDefinitions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+  Example: /providers/Microsoft.Authorization/roleDefinitions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
   EOT
   type        = string
 }
@@ -42,14 +42,14 @@ variable "cwpp_role_definition_id" {
 ###############################################################################
 variable "enable_cnapp" {
   default     = true
-  description = "(optional) Enable CNAPP functions. If it is true, both CSPM and CWPP role definitions will be created and assigned for comprehensive security scanning."
+  description = "(Optional) Enable Cloud Native Application Protection Platform (CNAPP) functionality. When true, Azure Policy will automatically assign both CSPM and CWPP roles to new subscriptions for comprehensive security coverage."
   type        = bool
 }
 variable "excluded_subscription_ids" {
   description = <<EOT
-  (optional) A list of Azure subscription IDs where role assignments will not be applied. Please specify the subscriptions you want to disable with this module. If not specified, all subscriptions in the management group will be targeted.
+  (Optional) List of Azure subscription IDs to exclude from automatic role assignments. These subscriptions will not receive Cloudbase roles when created. If not specified, all new subscriptions in the management group will be protected.
 
-  ex: ["xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy"]
+  Example: ["xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy"]
   EOT
   type        = list(string)
   default     = []
@@ -57,7 +57,7 @@ variable "excluded_subscription_ids" {
 
 variable "auto_role_assignment_deployment_permissions" {
   description = <<EOT
-  (optional) Specify the permissions for the auto role assignment deployment role.
+  (Optional) Permissions for the deployment role used by Azure Policy to automatically assign Cloudbase roles to new subscriptions. This role enables the policy remediation task to create role assignments.
   EOT
   type = object({
     custom = object({
