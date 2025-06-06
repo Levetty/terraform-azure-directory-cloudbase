@@ -41,7 +41,7 @@ The module consists of three main components:
 
 ```hcl
 module "cloudbase" {
-  source = "github.com/your-org/terraform-azure-directory-cloudbase"
+  source = "Levetty/organization-cloudabse/azure"
 
   directory_id = "your-tenant-id"
 
@@ -57,7 +57,7 @@ module "cloudbase" {
 
 ```hcl
 module "cloudbase" {
-  source = "github.com/your-org/terraform-azure-directory-cloudbase"
+  source = "Levetty/organization-cloudabse/azure"
 
   directory_id = "your-tenant-id"
 
