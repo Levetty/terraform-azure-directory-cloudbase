@@ -1,8 +1,8 @@
 ###############################################################################
 # Required
 ###############################################################################
-variable "tenant_id" {
-  description = "(required) The Azure Entra ID tenant ID"
+variable "directory_id" {
+  description = "(required) The Azure Entra ID directory ID"
   type        = string
 }
 
