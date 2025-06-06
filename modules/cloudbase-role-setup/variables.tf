@@ -3,27 +3,27 @@
 ###############################################################################
 variable "cloudbase_app_sp_object_id" {
   description = <<EOT
-  (required) The object ID of the Cloudbase Application Service Principal.
+  (Required) The object ID of the Cloudbase Application Service Principal created by the cloudbase-app module.
 
-  ex: 00000000-0000-0000-0000-000000000000
+  Example: 00000000-0000-0000-0000-000000000000
   EOT
   type        = string
 }
 
 variable "root_management_group_id" {
   description = <<EOT
-  (required) The ID of the root management group.
+  (Required) The ID of the root management group where custom role definitions will be created.
 
-  ex: /providers/Microsoft.Management/managementGroups/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+  Example: /providers/Microsoft.Management/managementGroups/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
   EOT
   type        = string
 }
 
 variable "subscription_ids" {
   description = <<EOT
-  (required) A list of Azure subscription IDs where role assignments will be applied. Please specify the subscriptions you want to manage with this module.
+  (Required) List of Azure subscription IDs where Cloudbase role assignments will be applied. These subscriptions will be scanned and protected by Cloudbase.
 
-  ex: ["xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy"]
+  Example: ["xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy"]
   EOT
   type        = list(string)
 }
@@ -33,13 +33,13 @@ variable "subscription_ids" {
 ###############################################################################
 variable "enable_cnapp" {
   default     = true
-  description = "(optional) Enable CNAPP functions. If it is true, both CSPM and CWPP role definitions will be created and assigned for comprehensive security scanning."
+  description = "(Optional) Enable Cloud Native Application Protection Platform (CNAPP) functionality. When true, creates and assigns both CSPM (Cloud Security Posture Management) and CWPP (Cloud Workload Protection Platform) roles for comprehensive security coverage."
   type        = bool
 }
 
 variable "directory_connection_permissions" {
   description = <<EOT
-  (optional) Specify the permissions for the directory connection role.
+  (Optional) Built-in role permissions for directory connection. This role enables Cloudbase to read Azure AD/Entra ID directory information for user and group management.
   EOT
   type = object({
     built_in = list(object({
@@ -55,7 +55,7 @@ variable "directory_connection_permissions" {
 
 variable "cspm_permissions" {
   description = <<EOT
-  (optional) Specify the permissions for the CSPM role.
+  (Optional) Permissions for Cloud Security Posture Management (CSPM) role. CSPM continuously monitors cloud resources for security misconfigurations and compliance violations. You can define custom permissions or use built-in roles.
   EOT
   type = object({
     custom = object({
@@ -81,7 +81,7 @@ variable "cspm_permissions" {
 
 variable "cwpp_permissions" {
   description = <<EOT
-  (optional) Specify the permissions for the CWPP role.
+  (Optional) Permissions for Cloud Workload Protection Platform (CWPP) role. CWPP provides runtime protection for cloud workloads including VMs, containers, and serverless functions. You can define custom permissions or use built-in roles.
   EOT
   type = object({
     custom = object({

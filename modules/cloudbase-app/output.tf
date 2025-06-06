@@ -1,5 +1,5 @@
-output "cloudbase_app_application_id" {
-  description = "The application ID (Client ID) of the Cloudbase App"
+output "cloudbase_app_client_id" {
+  description = "The Client ID of the Cloudbase App"
   value       = azuread_application.cloudbase_app.client_id
 }
 
