@@ -33,25 +33,9 @@ variable "always_recreate_cloudbase_app" {
   default     = false
 }
 
-variable "excluded_subscription_ids" {
-  description = <<EOT
-  (Optional) List of Azure subscription IDs to exclude from Cloudbase role assignments. These subscriptions will not be monitored or protected by Cloudbase.
-
-  Example: ["xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy"]
-  EOT
-  type        = list(string)
-  default     = []
-}
-
 variable "enable_cnapp" {
   default     = true
   description = "(Optional) Enable Cloud Native Application Protection Platform (CNAPP) functionality. When true, creates both CSPM (Cloud Security Posture Management) and CWPP (Cloud Workload Protection Platform) roles for comprehensive cloud security."
-  type        = bool
-}
-
-variable "enable_autoassign" {
-  default     = true
-  description = "(Optional) Enable automatic role assignment for new subscriptions. When true, Azure Policy automatically assigns Cloudbase roles to any new subscription created in the tenant, ensuring continuous protection."
   type        = bool
 }
 
@@ -65,7 +49,7 @@ variable "directory_connection_permissions" {
 
   default = {
     built_in = [{
-      name        = "Management Group Contributor Role"
+      name        = "Management Group Reader"
       role_def_id = "/providers/Microsoft.Authorization/roleDefinitions/ac63b705-f282-497d-ac71-919bf39d939d"
     }]
   }
@@ -94,7 +78,7 @@ variable "cspm_permissions" {
 
   default = {
     custom = {
-      role_def_name = "CloudbaseCSPMRoleV20240906"
+      role_def_name = "CloudbaseCSPMRoleV20240906_ORG"
       permissions = {
         actions = [
           "*/read",
@@ -140,7 +124,7 @@ variable "cwpp_permissions" {
 
   default = {
     custom = {
-      role_def_name = "CloudbaseCWPPRoleV20240906"
+      role_def_name = "CloudbaseCWPPRoleV20240906_ORG"
       permissions = {
         actions = [
           "Microsoft.Resources/subscriptions/resourceGroups/write",
@@ -154,47 +138,6 @@ variable "cwpp_permissions" {
           "Microsoft.Storage/storageAccounts/listkeys/action",
           "Microsoft.Web/sites/config/list/action",
           "Microsoft.Web/sites/publishxml/Action"
-        ],
-        not_actions      = [],
-        data_actions     = [],
-        not_data_actions = []
-      }
-    }
-    built_in = []
-  }
-}
-
-variable "auto_role_assignment_deployment_permissions" {
-  description = <<EOT
-  (Optional) Permissions for the deployment role used by Azure Policy to automatically assign Cloudbase roles to new subscriptions. This role enables the policy remediation task to create role assignments.
-  EOT
-
-  type = object({
-    custom = object({
-      role_def_name = string
-      permissions = object({
-        actions          = list(string)
-        not_actions      = list(string)
-        data_actions     = list(string)
-        not_data_actions = list(string)
-      })
-    })
-    built_in = list(object({
-      name        = string
-      role_def_id = string
-    }))
-  })
-
-  default = {
-    custom = {
-      role_def_name = "CloudbaseAutoRoleAssignmentDeploymentRoleV20250423"
-      permissions = {
-        actions = [
-          "Microsoft.Authorization/roleAssignments/read",
-          "Microsoft.Authorization/roleAssignments/write",
-          "Microsoft.Resources/subscriptions/resourceGroups/read",
-          "Microsoft.Resources/subscriptions/read",
-          "Microsoft.Resources/deployments/*",
         ],
         not_actions      = [],
         data_actions     = [],

@@ -3,5 +3,5 @@ output "cspm_role_definition_id" {
 }
 
 output "cwpp_role_definition_id" {
-  value = local.cwpp_role_def_id
+  value = var.enable_cnapp ? local.cwpp_role_def_id : ""
 }

@@ -56,6 +56,19 @@ resource "azuread_service_principal" "cloudbase_app_sp" {
   client_id   = azuread_application.cloudbase_app.client_id
 }
 
+# Create a group for Cloudbase application
+resource "azuread_group" "cloudbase_group" {
+  display_name     = "cloudbase-security-group${local.random}"
+  description      = "Security group for Cloudbase application role assignments"
+  security_enabled = true
+}
+
+# Add service principal as a member of the group
+resource "azuread_group_member" "cloudbase_sp_member" {
+  group_object_id  = azuread_group.cloudbase_group.object_id
+  member_object_id = azuread_service_principal.cloudbase_app_sp.object_id
+}
+
 resource "azuread_app_role_assignment" "admin_consent" {
   for_each            = local.msgraph_resource_access
   app_role_id         = each.value.id
