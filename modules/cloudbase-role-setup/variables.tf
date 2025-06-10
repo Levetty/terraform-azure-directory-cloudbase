@@ -1,9 +1,9 @@
 ###############################################################################
 # Required
 ###############################################################################
-variable "cloudbase_app_sp_object_id" {
+variable "cloudbase_group_object_id" {
   description = <<EOT
-  (Required) The object ID of the Cloudbase Application Service Principal created by the cloudbase-app module.
+  (Required) The object ID of the Cloudbase security group created by the cloudbase-app module.
 
   Example: 00000000-0000-0000-0000-000000000000
   EOT
@@ -17,15 +17,6 @@ variable "root_management_group_id" {
   Example: /providers/Microsoft.Management/managementGroups/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
   EOT
   type        = string
-}
-
-variable "subscription_ids" {
-  description = <<EOT
-  (Required) List of Azure subscription IDs where Cloudbase role assignments will be applied. These subscriptions will be scanned and protected by Cloudbase.
-
-  Example: ["xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy"]
-  EOT
-  type        = list(string)
 }
 
 ###############################################################################
