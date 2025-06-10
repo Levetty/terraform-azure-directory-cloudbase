@@ -56,6 +56,19 @@ resource "azuread_service_principal" "cloudbase_app_sp" {
   client_id   = azuread_application.cloudbase_app.client_id
 }
 
+# Create a group for Cloudbase application
+resource "azuread_group" "cloudbase_group" {
+  display_name     = "cloudbase-security-group${local.random}"
+  description      = "Security group for Cloudbase application role assignments"
+  security_enabled = true
+}
+
+# Add service principal as a member of the group
+resource "azuread_group_member" "cloudbase_sp_member" {
+  group_object_id  = azuread_group.cloudbase_group.object_id
+  member_object_id = azuread_service_principal.cloudbase_app_sp.object_id
+}
+
 resource "azuread_app_role_assignment" "admin_consent" {
   for_each            = local.msgraph_resource_access
   app_role_id         = each.value.id
@@ -71,11 +84,20 @@ resource "azuread_directory_role_assignment" "security_reader" {
   principal_object_id = azuread_service_principal.cloudbase_app_sp.object_id
 }
 
-resource "azuread_application_federated_identity_credential" "cloudbase_app_federated_credential" {
+resource "azuread_application_federated_identity_credential" "cloudbase_app_federated_credential_directory_scan" {
   application_id = azuread_application.cloudbase_app.id
-  display_name   = "cloudbase-app-org-credential"
+  display_name   = "cloudbase-app-org-credential-for-directory-scan"
 
-  issuer    = var.federated_identity_credential.issuer
-  audiences = var.federated_identity_credential.audiences
-  subject   = var.federated_identity_credential.subject
+  issuer    = var.federated_identity_credential_directory_scan.issuer
+  audiences = var.federated_identity_credential_directory_scan.audiences
+  subject   = var.federated_identity_credential_directory_scan.subject
+}
+
+resource "azuread_application_federated_identity_credential" "cloudbase_app_federated_credential_security_scan" {
+  application_id = azuread_application.cloudbase_app.id
+  display_name   = "cloudbase-app-org-credential-for-security-scan"
+
+  issuer    = var.federated_identity_credential_security_scan.issuer
+  audiences = var.federated_identity_credential_security_scan.audiences
+  subject   = var.federated_identity_credential_security_scan.subject
 }
