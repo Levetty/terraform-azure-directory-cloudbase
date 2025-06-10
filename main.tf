@@ -25,9 +25,9 @@ module "cloudbase-app" {
 module "cloudbase-role-setup" {
   source = "./modules/cloudbase-role-setup"
 
-  enable_cnapp               = var.enable_cnapp
-  cloudbase_group_object_id  = module.cloudbase-app.cloudbase_group_object_id
-  root_management_group_id   = data.azurerm_management_group.root.id
+  enable_cnapp              = var.enable_cnapp
+  cloudbase_group_object_id = module.cloudbase-app.cloudbase_group_object_id
+  root_management_group_id  = data.azurerm_management_group.root.id
 
   // permissions
   directory_connection_permissions = var.directory_connection_permissions
