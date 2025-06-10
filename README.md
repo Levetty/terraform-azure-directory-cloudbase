@@ -41,22 +41,22 @@ The module consists of three main components:
 
 ```hcl
 module "cloudbase" {
-  source = "github.com/your-org/terraform-azure-directory-cloudbase"
+  source = "Levetty/organization-cloudabse/azure"
 
   directory_id = "your-tenant-id"
 
   # Directory scan credential for Azure AD/Entra ID access
   federated_identity_credential_directory_scan = {
-    audiences = ["api://AzureADTokenExchange"]
-    issuer    = "https://cloudbase.example.com"
-    subject   = "cloudbase-directory-scan"
+    issuer    = "<issuer>"
+    subject   = "<subject>"
+    audiences = ["<audience>"]
   }
 
   # Security scan credential for Azure resource access
   federated_identity_credential_security_scan = {
-    audiences = ["api://AzureADTokenExchange"]
-    issuer    = "https://cloudbase.example.com"
-    subject   = "cloudbase-security-scan"
+    issuer    = "<issuer>"
+    subject   = "<subject>"
+    audiences = ["<audience>"]
   }
 }
 ```
@@ -65,15 +65,15 @@ module "cloudbase" {
 
 ```hcl
 module "cloudbase" {
-  source = "github.com/your-org/terraform-azure-directory-cloudbase"
+  source = "Levetty/organization-cloudabse/azure"
 
   directory_id = "your-tenant-id"
 
   # Directory scan credential for Azure AD/Entra ID access
   federated_identity_credential_directory_scan = {
-    audiences = ["api://AzureADTokenExchange"]
-    issuer    = "https://cloudbase.example.com"
-    subject   = "cloudbase-directory-scan"
+    audiences = ["<audience>"]
+    issuer    = "<issuer>"
+    subject   = "<subject>"
   }
 
   # Security scan credential for Azure resource access
@@ -94,13 +94,13 @@ module "cloudbase" {
 
   # Disable automatic role assignment for new subscriptions
   enable_autoassign = false
-  
   always_recreate_cloudbase_app = false
 }
 ```
 
 ## Input Variables
 
+<<<<<<< HEAD
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|----------|
 | `directory_id` | The Azure Entra ID tenant/directory ID | `string` | - | yes |
@@ -114,6 +114,21 @@ module "cloudbase" {
 | `cspm_permissions` | Custom permissions for CSPM role | `object` | See defaults | no |
 | `cwpp_permissions` | Custom permissions for CWPP role | `object` | See defaults | no |
 | `auto_role_assignment_deployment_permissions` | Permissions for policy deployment role | `object` | See defaults | no |
+=======
+| Name | Description | Type | Default | Required |
+| --------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------- | ------------ | -------- |
+| `directory_id` | The Azure Entra ID tenant/directory ID | `string` | - | yes |
+| `federated_identity_credential` | Federated identity credential for Cloudbase authentication | `object({ audiences = list(string), issuer = string, subject = string })` | - | yes |
+| `always_recreate_cloudbase_app` | Always recreate the Cloudbase app (useful for testing) | `bool` | `false` | no |
+| `excluded_subscription_ids` | List of subscription IDs to exclude from role assignments | `list(string)` | `[]` | no |
+| `enable_cnapp` | Enable CNAPP functions (controls CWPP role creation) | `bool` | `true` | no |
+| `enable_autoassign` | Enable automatic role assignment for new subscriptions | `bool` | `true` | no |
+| `directory_connection_permissions` | Built-in roles for directory connection | `map(list(string))` | See defaults | no |
+| `cspm_permissions` | Custom permissions for CSPM role | `map(list(string))` | See defaults | no |
+| `cwpp_permissions` | Custom permissions for CWPP role | `map(list(string))` | See defaults | no |
+| `auto_role_assignment_deployment_permissions` | Permissions for policy deployment role | `map(list(string))` | See defaults | no |
+
+> > > > > > > 82c0beb7b88dd670fe14963b19374e780e2fe5e0
 
 ## Outputs
 

@@ -12,7 +12,7 @@ variable "federated_identity_credential_directory_scan" {
     issuer    = string
     subject   = string
   })
-  description = "(required) Federated Identity Credential for establishing a connection between your Azure environment and Cloudbase. Please provide the values supplied by Cloudbase. For directory scan."
+  description = "(Required) Federated Identity Credential for establishing secure connection between Azure and Cloudbase. These values are provided by Cloudbase during onboarding."
 }
 
 variable "federated_identity_credential_security_scan" {
@@ -21,9 +21,13 @@ variable "federated_identity_credential_security_scan" {
     issuer    = string
     subject   = string
   })
-  description = "(required) Federated Identity Credential for establishing a connection between your Azure environment and Cloudbase. Please provide the values supplied by Cloudbase. For security scan."
+  description = "(Required) Federated Identity Credential for establishing a connection between your Azure environment and Cloudbase. Please provide the values supplied by Cloudbase. For security scan."
 }
 
+variable "always_recreate_cloudbase_app" {
+  description = "(Optional) Controls whether to force recreation of the Cloudbase application. Set to true to create a new app with unique name on every apply. Set to false when using remote Terraform state to maintain existing resources."
+  type        = bool
+}
 
 ###############################################################################
 # Optional 
