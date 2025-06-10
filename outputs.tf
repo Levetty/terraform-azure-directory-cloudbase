@@ -1,5 +1,5 @@
 output "cloudbase_app_application_id" {
-  value = module.cloudbase-app.cloudbase_app_application_id
+  value = module.cloudbase-app.cloudbase_app_client_id
 }
 
 output "directory_id" {
