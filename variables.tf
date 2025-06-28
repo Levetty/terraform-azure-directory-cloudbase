@@ -27,6 +27,12 @@ variable "federated_identity_credential_security_scan" {
 ###############################################################################
 # Optional 
 ###############################################################################
+variable "subscription_id" {
+  description = "(Optional) The Azure subscription ID to be used by the azurerm provider. This is only required for provider configuration and does not affect the actual resource creation. If not provided, the $ARM_SUBSCRIPTION_ID or $AZURE_SUBSCRIPTION_ID environment variable should be set instead."
+  type        = string
+  default     = ""
+}
+
 variable "always_recreate_cloudbase_app" {
   description = "(Optional) Controls whether to force recreation of the Cloudbase application. Set to true to create a new app with unique name on every apply. Set to false when using remote Terraform state to maintain existing resources."
   type        = bool

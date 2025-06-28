@@ -2,6 +2,7 @@ provider "azuread" {
   tenant_id = var.directory_id
 }
 provider "azurerm" {
+  subscription_id = var.subscription_id == "" ? null : var.subscription_id
   features {}
 }
 
