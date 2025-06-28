@@ -34,6 +34,18 @@ The module consists of two main components:
 - Terraform v1.11 or later
 - Azure subscription with appropriate permissions
 - Management group access for role assignments
+- Azure AD permissions to create applications and assign directory roles
+- **Azure Subscription ID**: The azurerm provider needs a subscription ID, which can be provided in one of the following ways (in order of precedence):
+  1. Set the `subscription_id` variable in your Terraform configuration
+  2. Export the ARM_SUBSCRIPTION_ID environment variable:
+     ```bash
+     export ARM_SUBSCRIPTION_ID="your-subscription-id"
+     ```
+  3. Export the AZURE_SUBSCRIPTION_ID environment variable:
+     ```bash
+     export AZURE_SUBSCRIPTION_ID="your-subscription-id"
+     ```
+  4. Use the current Azure CLI subscription (set with `az account set --subscription`)
 
 ## Usage
 
@@ -41,7 +53,7 @@ The module consists of two main components:
 
 ```hcl
 module "cloudbase" {
-  source = "Levetty/organization-cloudabse/azure"
+  source = "Levetty/directory-cloudbase/azure"
 
   directory_id = "your-tenant-id"
 
@@ -65,7 +77,7 @@ module "cloudbase" {
 
 ```hcl
 module "cloudbase" {
-  source = "Levetty/organization-cloudabse/azure"
+  source = "Levetty/directory-cloudbase/azure"
 
   directory_id = "your-tenant-id"
 
@@ -78,10 +90,13 @@ module "cloudbase" {
 
   # Security scan credential for Azure resource access
   federated_identity_credential_security_scan = {
-    audiences = ["api://AzureADTokenExchange"]
-    issuer    = "https://cloudbase.example.com"
-    subject   = "cloudbase-security-scan"
+    audiences = ["<audience>"]
+    issuer    = "<issuer>"
+    subject   = "<subject>"
   }
+
+  # Optional: Specify subscription ID for provider
+  subscription_id = "your-subscription-id"
 
   # Disable CWPP functionality
   enable_cnapp = false
@@ -93,16 +108,17 @@ module "cloudbase" {
 
 ## Input Variables
 
-| Name                                           | Description                                                       | Type                                                                      | Default      | Required |
-| ---------------------------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------ | -------- |
-| `directory_id`                                 | The Azure Entra ID tenant/directory ID                            | `string`                                                                  | -            | yes      |
-| `federated_identity_credential_directory_scan` | Federated identity credential for Cloudbase directory scan access | `object({ audiences = list(string), issuer = string, subject = string })` | -            | yes      |
-| `federated_identity_credential_security_scan`  | Federated identity credential for Cloudbase security scan access  | `object({ audiences = list(string), issuer = string, subject = string })` | -            | yes      |
-| `always_recreate_cloudbase_app`                | Always recreate the Cloudbase app (useful for testing)            | `bool`                                                                    | `false`      | no       |
-| `enable_cnapp`                                 | Enable CNAPP functions (controls CWPP role creation)              | `bool`                                                                    | `true`       | no       |
-| `directory_connection_permissions`             | Built-in roles for directory connection (Management Group Reader) | `object`                                                                  | See defaults | no       |
-| `cspm_permissions`                             | Custom permissions for CSPM role                                  | `object`                                                                  | See defaults | no       |
-| `cwpp_permissions`                             | Custom permissions for CWPP role                                  | `object`                                                                  | See defaults | no       |
+| Name                                           | Description                                                                                                                                                                                  | Type                                                                      | Default      | Required |
+| ---------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------ | -------- |
+| `directory_id`                                 | The Azure Entra ID (formerly Azure AD) tenant/directory ID where Cloudbase resources will be created                                                                                         | `string`                                                                  | -            | yes      |
+| `federated_identity_credential_directory_scan` | Federated Identity Credential for establishing secure connection between Azure and Cloudbase. These values are provided by Cloudbase during onboarding                                       | `object({ audiences = list(string), issuer = string, subject = string })` | -            | yes      |
+| `federated_identity_credential_security_scan`  | Federated Identity Credential for establishing a connection between your Azure environment and Cloudbase. Please provide the values supplied by Cloudbase. For security scan                 | `object({ audiences = list(string), issuer = string, subject = string })` | -            | yes      |
+| `subscription_id`                              | The Azure subscription ID to be used by the azurerm provider. If not provided, it will be automatically resolved from environment variables or Azure CLI. See [Prerequisites](#prerequisites) for details | `string`                                                                  | `""`         | no       |
+| `always_recreate_cloudbase_app`                | Controls whether to force recreation of the Cloudbase application. Set to true to create a new app with unique name on every apply. Set to false when using remote Terraform state           | `bool`                                                                    | `false`      | no       |
+| `enable_cnapp`                                 | Enable Cloud Native Application Protection Platform (CNAPP) functionality. When true, creates both CSPM and CWPP roles for comprehensive cloud security                                      | `bool`                                                                    | `true`       | no       |
+| `directory_connection_permissions`             | Built-in roles for directory connection (Management Group Reader)                                                                                                                            | `object`                                                                  | See defaults | no       |
+| `cspm_permissions`                             | Permissions for Cloud Security Posture Management (CSPM) role. CSPM continuously monitors cloud resources for security misconfigurations and compliance violations                           | `object`                                                                  | See defaults | no       |
+| `cwpp_permissions`                             | Permissions for Cloud Workload Protection Platform (CWPP) role. CWPP provides runtime protection for cloud workloads including VMs, containers, and serverless functions                     | `object`                                                                  | See defaults | no       |
 
 ## Outputs
 
