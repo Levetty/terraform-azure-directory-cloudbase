@@ -9,7 +9,7 @@ provider "azurerm" {
 
 // resource
 data "azurerm_management_group" "root" {
-  display_name = "Tenant Root Group"
+  name = var.directory_id
 }
 
 locals {
