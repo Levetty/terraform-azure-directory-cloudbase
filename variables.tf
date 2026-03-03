@@ -134,7 +134,6 @@ variable "cwpp_permissions" {
       permissions = {
         actions = [
           "Microsoft.Resources/subscriptions/resourceGroups/write",
-          "Microsoft.Resources/subscriptions/resourceGroups/delete",
           "Microsoft.Compute/snapshots/write",
           "Microsoft.Compute/snapshots/delete",
           "Microsoft.Compute/disks/beginGetAccess/action",
