@@ -94,7 +94,9 @@ variable "cspm_permissions" {
           "Microsoft.Security/iotDefenderSettings/packageDownloads/action",
           "Microsoft.Security/iotSensors/downloadResetPassword/action",
         ],
-        not_actions = [],
+        not_actions = [
+          "Microsoft.ContainerRegistry/registries/pull/read"
+        ],
         data_actions = [
           "Microsoft.KeyVault/vaults/*/read",
           "Microsoft.KeyVault/vaults/secrets/readMetadata/action",
@@ -140,6 +142,7 @@ variable "cwpp_permissions" {
           "Microsoft.Compute/disks/endGetAccess/action",
           "Microsoft.Compute/snapshots/beginGetAccess/action",
           "Microsoft.Compute/snapshots/endGetAccess/action",
+          "Microsoft.ContainerRegistry/registries/pull/read",
           "Microsoft.Storage/storageAccounts/listkeys/action",
           "Microsoft.Web/sites/config/list/action",
           "Microsoft.Web/sites/publishxml/Action"
