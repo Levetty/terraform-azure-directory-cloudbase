@@ -84,7 +84,7 @@ variable "cspm_permissions" {
 
   default = {
     custom = {
-      role_def_name = "CloudbaseCSPMRoleV20240906_ORG"
+      role_def_name = "CloudbaseCSPMRoleV20260805_ORG"
       permissions = {
         actions = [
           "*/read",
@@ -132,19 +132,18 @@ variable "cwpp_permissions" {
 
   default = {
     custom = {
-      role_def_name = "CloudbaseCWPPRoleV20240906_ORG"
+      role_def_name = "CloudbaseCWPPRoleV20260805_ORG"
       permissions = {
         actions = [
           "Microsoft.Resources/subscriptions/resourceGroups/write",
           "Microsoft.Compute/snapshots/write",
           "Microsoft.Compute/snapshots/delete",
-          "Microsoft.Compute/disks/beginGetAccess/action",
-          "Microsoft.Compute/disks/endGetAccess/action",
           "Microsoft.Compute/snapshots/beginGetAccess/action",
           "Microsoft.Compute/snapshots/endGetAccess/action",
           "Microsoft.ContainerRegistry/registries/pull/read",
           "Microsoft.Storage/storageAccounts/listkeys/action",
           "Microsoft.Web/sites/config/list/action",
+          "Microsoft.Web/sites/publish/Action",
           "Microsoft.Web/sites/publishxml/Action"
         ],
         not_actions      = [],
