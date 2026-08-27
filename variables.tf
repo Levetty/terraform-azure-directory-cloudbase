@@ -142,7 +142,6 @@ variable "cwpp_permissions" {
           "Microsoft.Compute/snapshots/beginGetAccess/action",
           "Microsoft.Compute/snapshots/endGetAccess/action",
           "Microsoft.ContainerRegistry/registries/pull/read",
-          "Microsoft.Storage/storageAccounts/listkeys/action",
           "Microsoft.Web/sites/config/list/action",
           "Microsoft.Web/sites/publish/Action",
           "Microsoft.Web/sites/publishxml/Action"
