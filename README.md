@@ -106,6 +106,12 @@ module "cloudbase" {
 }
 ```
 
+## Updating Permissions
+
+This module is the source of truth for the Cloudbase role definitions (name and actions). When Cloudbase publishes a new module version, re-run `terraform init -upgrade && terraform apply` (or re-run the setup script from the Cloudbase console in the same Cloud Shell directory) and the existing role definitions at the root management group are updated in place. Role assignments are not affected. Data actions are managed separately (added via Azure CLI after assignment) and are not touched by re-applying.
+
+Permissions edited manually in the Azure Portal are overwritten on the next apply. If you need a customized set of permissions, either manage `main.tf` yourself and override `cspm_permissions` / `cwpp_permissions`, or create the role definitions via the Azure Portal procedure instead of this module.
+
 ## Input Variables
 
 | Name                                           | Description                                                                                                                                                                                  | Type                                                                      | Default      | Required |

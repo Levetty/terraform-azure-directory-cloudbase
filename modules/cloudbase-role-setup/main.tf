@@ -27,8 +27,10 @@ resource "azurerm_role_definition" "cspm" {
   assignable_scopes = [var.root_management_group_id]
 
   lifecycle {
-    # Always ignore changes to permissions since we may update them via Azure CLI
-    ignore_changes = [permissions]
+    # Data actions are added after the management group assignment via Azure CLI
+    # (roles with data actions cannot be assigned at management group scope),
+    # so only they are ignored. Actions are managed by Terraform.
+    ignore_changes = [permissions[0].data_actions, permissions[0].not_data_actions]
   }
 }
 
@@ -49,8 +51,10 @@ resource "azurerm_role_definition" "cwpp" {
   assignable_scopes = [var.root_management_group_id]
 
   lifecycle {
-    # Always ignore changes to permissions since we may update them via Azure CLI
-    ignore_changes = [permissions]
+    # Data actions are added after the management group assignment via Azure CLI
+    # (roles with data actions cannot be assigned at management group scope),
+    # so only they are ignored. Actions are managed by Terraform.
+    ignore_changes = [permissions[0].data_actions, permissions[0].not_data_actions]
   }
 }
 
